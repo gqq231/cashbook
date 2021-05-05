@@ -18,7 +18,6 @@ export default {
 <style lang="scss" scoped>
 // scoped 解决为你需要添加样式的标签添加一个唯一属性 保证class不会重复
 .nav-wrapper {
-  border: 1px solid green;
   display: flex;
   flex-direction: column;
   height: 100vh;
