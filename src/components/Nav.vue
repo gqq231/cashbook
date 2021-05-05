@@ -1,14 +1,14 @@
 <template>
   <nav>
-    <router-link to="/money" class="item">
+    <router-link to="/money" class="item" active-class="selected">
       <Icon name="money" />
       记账
     </router-link>
-    <router-link to="/label" class="item">
+    <router-link to="/label" class="item" active-class="selected">
       <Icon name="label" />
       标签
     </router-link>
-    <router-link to="/statistics" class="item">
+    <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statistics" />
       统计
     </router-link>
@@ -26,6 +26,7 @@ nav {
   display: flex;
   flex-direction: row;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.55);
+  color: #bfbfbf;
   > .item {
     padding: 2px 0;
     width: 33.333333%;
@@ -34,10 +35,15 @@ nav {
     align-items: center;
     flex-direction: column;
     font-size: 12px;
+    font-weight: bold;
     .icon {
       width: 30px;
       height: 30px;
     }
+  }
+  > .item.selected {
+    color: rgb(32, 103, 218);
+    fill: rgb(32, 103, 218);
   }
 }
 </style>
