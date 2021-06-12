@@ -1,31 +1,69 @@
 <template>
   <div class="numberPad">
-    <div class="output">100</div>
+    <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
+      <button @click="inputContent">1</button>
+      <button @click="inputContent">2</button>
+      <button @click="inputContent">3</button>
       <!-- <button>+</button> -->
-      <button>删除</button>
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
+      <button @click="remove">删除</button>
+      <button @click="inputContent">4</button>
+      <button @click="inputContent">5</button>
+      <button @click="inputContent">6</button>
       <!-- <button>-</button> -->
-      <button>清空</button>
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-      <button class="ok">ok</button>
-      <button class="zero">0</button>
-      <button>.</button>
+      <button @click="empty">清空</button>
+      <button @click="inputContent">7</button>
+      <button @click="inputContent">8</button>
+      <button @click="inputContent">9</button>
+      <button class="ok" @click="ok">ok</button>
+      <button class="zero" @click="inputContent">0</button>
+      <button @click="inputContent">.</button>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "NumberPad",
-};
+<script lang='ts'>
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+@Component
+export default class NumberPad extends Vue {
+  output: string = "0";
+  inputContent(event: MouseEvent) {
+    if (event.target) {
+      const button = event.target as HTMLButtonElement;
+      const input = button.textContent!;
+      // const input = button.textContent as string;
+      if (this.output.length === 16) {
+        return;
+      }
+      if (this.output === "0") {
+        if ("0123456789".indexOf(input) >= 0) {
+          this.output = input;
+        } else {
+          this.output += input;
+        }
+        return;
+      }
+      if (this.output.indexOf(".") >= 0) {
+        if (input === ".") {
+          return;
+        }
+      }
+      this.output += input;
+    }
+  }
+  remove() {
+    if (this.output.length === 1) {
+      this.output = "0";
+    } else {
+      this.output = this.output.slice(0, -1);
+    }
+  }
+  empty() {
+    this.output = "0";
+  }
+  ok() {}
+}
 </script>
 
 <style lang="scss" scoped>
@@ -38,6 +76,7 @@ export default {
     font-family: Consolas, monospace;
     padding: 9px 16px;
     text-align: right;
+    min-height: 72px;
   }
   .buttons {
     @extend %clear-fix !optional;

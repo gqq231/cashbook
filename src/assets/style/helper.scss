@@ -55,6 +55,9 @@ PMingLiU,
 MingLiU,
 serif;
 
+
+// placeholder
+
 $color-highlight:#333;
 
 %outtershadow {
@@ -66,7 +69,7 @@ $color-highlight:#333;
         inset 0 3px 3px -3px fade-out(black, 0);
 }
 
-// placeholder
+
 %clear-fix {
     &::after {
         content: '';
