@@ -27,7 +27,10 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NumberPad extends Vue {
-  output: string = "0";
+  // output: string = "0";
+  @Prop() readonly value!: number;
+  output: string = this.value.toString();
+
   inputContent(event: MouseEvent) {
     if (event.target) {
       const button = event.target as HTMLButtonElement;
@@ -55,14 +58,20 @@ export default class NumberPad extends Vue {
   remove() {
     if (this.output.length === 1) {
       this.output = "0";
+      this.$emit("update:value", this.output);
     } else {
       this.output = this.output.slice(0, -1);
     }
   }
   empty() {
     this.output = "0";
+    this.$emit("update:value", this.output);
   }
-  ok() {}
+  ok() {
+    this.$emit("update:value", this.output);
+    this.$emit("submit", this.output);
+    this.output = "0";
+  }
 }
 </script>
 

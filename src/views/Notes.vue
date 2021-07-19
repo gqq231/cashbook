@@ -4,6 +4,7 @@
       <!-- {{ value }} -->
       <span class="name">备注</span>
       <!-- 自带的标签可以通过$event.target获取该值 -->
+      <!-- v-model的双向绑定 -->
       <input type="text" placeholder="请在这里输入备注" v-model="value" />
     </label>
   </div>
@@ -11,14 +12,15 @@
 
 <script lang='ts'>
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Emit, Watch } from "vue-property-decorator";
 @Component
 export default class Notes extends Vue {
   value = "";
-  // onInput(event: KeyboardEvent) {
-  //   const input = event.target as HTMLInputElement;
-  //   this.value = input.value;
-  // }
+
+  @Watch("value")
+  onValueChange(value: string, oldvalue: string) {
+    this.$emit("update:value", value);
+  }
 }
 </script>
 
