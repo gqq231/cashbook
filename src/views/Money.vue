@@ -3,21 +3,25 @@
     <Layout class-prefix="layout">
       <!-- {{ recordList }} -->
       <number-pad :value.sync="record.amount" @submit="saveRecord" />
-      <types :value.sync="record.type" />
-      <notes @update:value="onUpdateValues" />
-      <tags :data-source.sync="tags" :value.sync="record.tags" />
+      <Tabs :dataSource="tagList" :value.sync="record.type" />
+      <notes
+        @update:value="onUpdateValues"
+        filedName="备注"
+        placeholder="请输入备注信息"
+      />
+      <tags />
     </Layout>
   </div>
 </template>
 
 <script lang="ts">
-import Notes from "./Notes.vue";
-import NumberPad from "./NumberPad.vue";
-import Tags from "./Tags.vue";
-import Types from "./Types.vue";
+import Notes from "@/components/money/Fromitem.vue";
+import NumberPad from "@/components/money/NumberPad.vue";
+import Tabs from "@/components/Tabs.vue";
+import Tags from "@/components/money/Tags.vue";
+import tapList from "@/constant/tapList";
 import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-import model from "./model";
+import { Component } from "vue-property-decorator";
 
 window.localStorage.setItem("version", "1.0.0");
 
@@ -30,31 +34,25 @@ type RecordItem = {
   createAt?: Date;
 };
 
-const recordList: RecordItem[] = model.fetch();
-
 @Component({
-  components: { NumberPad, Types, Tags, Notes },
+  components: { NumberPad, Tags, Tabs, Notes },
+  computed: {
+    recordList() {
+      return this.$store.state.recordList;
+    },
+  },
 })
 export default class Money extends Vue {
-  tags = ["衣", "食", "住", "行"];
-  recordList: RecordItem[] = recordList;
-  //在赋值
+  tagList = tapList;
   record: RecordItem = { tags: [], notes: "", type: "-", amount: 0 };
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
+  created() {
+    this.$store.commit("fetchRecordList");
   }
   onUpdateValues(value: string) {
     this.record.notes = value;
   }
   saveRecord() {
-    const record2: RecordItem = model.clone(this.record);
-    record2.createAt = new Date();
-    this.recordList.push(record2);
-    console.log(this.recordList);
-  }
-  @Watch("recordList")
-  onRecordListChange() {
-    model.Save(this.recordList);
+    this.$store.commit("createRecord", this.record);
   }
 }
 </script>

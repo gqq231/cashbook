@@ -1,16 +1,16 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button @click="newTag">新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
       <li
-        v-for="tag in dataSource"
-        :key="tag"
-        :class="{ selected: selectedTages.indexOf(tag) >= 0 }"
+        v-for="tag in tagList"
+        :key="tag.id"
+        :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
         @click="toggle(tag)"
       >
-        {{ tag }}
+        {{ tag.name }}
       </li>
     </ul>
   </div>
@@ -18,43 +18,36 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mixins } from "vue-class-component";
+import TagHelper from "@/mixins/TagHelper";
 import { Component, Prop } from "vue-property-decorator";
-@Component
-export default class Tags extends Vue {
-  @Prop() readonly dataSource: string[] | undefined;
-  @Prop() readonly value!: string[];
-  selectedTages: string[] = this.value;
+
+@Component({})
+export default class Tags extends mixins(TagHelper) {
+  selectedTags: string[] = [];
+  get tagList() {
+    return this.$store.state.tagList;
+  }
+  created() {
+    this.$store.commit("fetchTagList");
+  }
   //控制标签的点击变化
   toggle(tag: string) {
     //检查是否存在
-    const index = this.selectedTages.indexOf(tag);
+    const index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
-      this.selectedTages.splice(index, 1);
+      this.selectedTags.splice(index, 1);
     } else {
-      this.selectedTages.push(tag);
+      this.selectedTags.push(tag);
     }
-    this.$emit("update:value", this.selectedTages);
-  }
-  // 创建新标签
-  newTag() {
-    const tagName = window.prompt("请输入标签名");
-    if (tagName === null) {
-      return;
-    }
-    if (tagName === "") {
-      window.alert("标签名不能为空");
-    } else {
-      if (this.dataSource) {
-        this.$emit("update:dataSource", [...this.dataSource, tagName]);
-        this.$emit("update:value", [...this.dataSource, tagName]);
-      }
-    }
+    // this.$emit("update:value", this.selectedTags);
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .tags {
+  background: white;
   display: flex;
   flex-grow: 1;
   flex-direction: column-reverse;

@@ -6,6 +6,8 @@ import store from './store'
 import Nav from '@/components/Nav.vue'
 import Layout from '@/components/Layout.vue'
 import Icon from '@/components/Icon.vue'
+import Button from '@/components/Button.vue'
+
 
 
 
@@ -15,7 +17,7 @@ Vue.component('Nav', Nav)
 //全局Layout
 Vue.component('Layout', Layout)
 Vue.component('Icon', Icon)
-
+Vue.component('Button', Button)
 
 new Vue({
   router,

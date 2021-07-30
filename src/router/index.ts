@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Money from '@/views/Money.vue'
 import Label from '@/views/Label.vue'
 import Statistics from '@/views/Statistics.vue'
+import EditLabel from '@/views/EditLabel.vue'
 import NoFound from '@/views/NoFound.vue';
 
 Vue.use(VueRouter)
@@ -24,6 +25,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/statistics",
     component: Statistics
+  },
+  {
+    path: "/label/edit/:id",
+    component: EditLabel
   },
   {
     path: "*",
