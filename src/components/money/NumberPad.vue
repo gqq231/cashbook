@@ -28,7 +28,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NumberPad extends Vue {
   // output: string = "0";
-  @Prop() readonly value!: number;
+  @Prop(Number) readonly value!: number;
   output: string = this.value.toString();
 
   inputContent(event: MouseEvent) {
@@ -68,8 +68,8 @@ export default class NumberPad extends Vue {
     this.$emit("update:value", this.output);
   }
   ok() {
-    this.$emit("update:value", this.output);
-    this.$emit("submit", this.output);
+    this.$emit("update:value", parseFloat(this.output));
+    this.$emit("submit", parseFloat(this.output));
     this.output = "0";
   }
 }

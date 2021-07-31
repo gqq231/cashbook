@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { mixins } from "vue-class-component";
 import TagHelper from "@/mixins/TagHelper";
 import { Component, Prop } from "vue-property-decorator";
@@ -40,7 +39,7 @@ export default class Tags extends mixins(TagHelper) {
     } else {
       this.selectedTags.push(tag);
     }
-    // this.$emit("update:value", this.selectedTags);
+    this.$emit("update:value", this.selectedTags);
   }
 }
 </script>

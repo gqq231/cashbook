@@ -5,11 +5,12 @@
       <number-pad :value.sync="record.amount" @submit="saveRecord" />
       <Tabs :dataSource="tagList" :value.sync="record.type" />
       <notes
-        @update:value="onUpdateValues"
+        :value.sync="record.notes"
         filedName="备注"
         placeholder="请输入备注信息"
       />
-      <tags />
+
+      <tags @update:value="record.tags = $event" />
     </Layout>
   </div>
 </template>
@@ -52,7 +53,14 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() {
+    if (!this.record.tags || this.record.tags.length === 0) {
+      return window.alert("请现在至少一个标签");
+    }
     this.$store.commit("createRecord", this.record);
+    if (this.$store.state.createRecordError === null) {
+      window.alert("已保存");
+      this.record.notes = "";
+    }
   }
 }
 </script>
